@@ -1,0 +1,49 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.bytedeco.javacpp-presets.tesseract</groupId>
+	<artifactId>BasicExample</artifactId>
+	<version>0.11</version>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+			
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.3</version>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<configuration>
+						<archive>
+							<manifest>
+								<mainClass>
+									BasicExample
+								</mainClass>
+							</manifest>
+						</archive>
+						<descriptorRefs>
+							<descriptorRef>jar-with-dependencies</descriptorRef>
+						</descriptorRefs>
+					</configuration>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.bytedeco.javacpp-presets</groupId>
+			<artifactId>tesseract</artifactId>
+			<version>3.03-rc1-0.11</version>
+		</dependency>
+	</dependencies>
+</project>

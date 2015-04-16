@@ -1,3 +1,10 @@
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import org.bytedeco.javacpp.*;
 import static org.bytedeco.javacpp.lept.*;
 import static org.bytedeco.javacpp.tesseract.*;
@@ -6,15 +13,18 @@ public class BasicExample {
 	
 	/**
 	 * 
-	 * Recognize text on the picture.
+	 * Recognize text on the picture. 
+	 * Modified example. Works with BufferedImage instead link to image file.
 	 * 
-	 * Example from JavaCPP.
+	 * Original example from JavaCPP.
 	 * @see <a href="https://github.com/bytedeco/javacpp-presets/tree/master/tesseract">
 	   JavaCPP Presets for Tesseract/a>
 	 * 
-	 * @param args [0] -- path to image file. "test.png" used if empty args[0].
+	 * 
+	 * 
+	 * @param Not used.
 	 */
-    public static void main(String[] args) {
+    public static void main(String[] args){
         BytePointer outText;
 
         TessBaseAPI api = new TessBaseAPI();
@@ -23,9 +33,23 @@ public class BasicExample {
             System.err.println("Could not initialize tesseract.");
             System.exit(1);
         }
-
-        // Open input image with leptonica library
-        PIX image = pixRead(args.length > 0 ? args[0] : "test.png");
+        
+        File imgPath = new File("test.png");
+        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+        BufferedImage img;
+        
+		try {
+			img = ImageIO.read(imgPath);
+			ImageIO.write(img, "png", baos );
+		} catch (IOException e) {
+			System.err.println("Reading file or writing byte[] failed.");
+			e.printStackTrace();
+		}
+        
+        byte[] imageInByte=baos.toByteArray();
+        
+        PIX image = lept.pixReadMemPng(imageInByte, imageInByte.length);
+        
         api.SetImage(image);
         // Get OCR result
         outText = api.GetUTF8Text();
